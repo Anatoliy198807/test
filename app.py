@@ -138,3 +138,4 @@ def logout():
 
 app.run(debug=True)
 
+print("GG")
