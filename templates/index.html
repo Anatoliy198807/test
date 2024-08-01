@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <style>
+        body {
+          margin: 0;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+        input.text {
+                    width:  400px;
+                    height: 12px;
+                    padding: 5px 10px 5px 10px;
+                    border:1px solid #999;
+                    font-size:16px;
+                    font-family: Tahoma;
+                    border-radius: 5px;
+                }
+
+        .main-table{
+                display: flex;
+                flex-direction:column;
+                justify-content:center;
+
+                align-items:center
+
+        }
+        
+        .button{
+
+        height: 15px;
+        width: 10px;
+
+
+        }
+        .party-table {
+                display: flex;
+                width: 500px;
+                border-radius: 15px;
+                background-color: Snow;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                flex-direction:column;
+                justify-content:flex-starts;
+                align-items:center
+                }
+
+        .item {
+                padding: 5px;
+                margin: 5px;
+                width: 20%;
+                border-radius: 5px;
+                border: 1px solid grey;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                }
+        .header-table {
+                padding: 5px;
+                margin: 5px;
+                border-radius: 15px;
+                display: flex;
+                height: 60px;
+                width: 500px;
+                flex-direction:row;
+                justify-content:space-evenly;
+                background-color: Snow;
+                align-items:center;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .list{
+                display: flex;
+
+                width: 100%;
+                flex-direction:row;
+                justify-content:space-evenly;
+                background-color: Snow;
+                align-items:center
+        }
+        .list2{
+                display: flex;
+
+                width: 30%;
+                flex-direction:row;
+                justify-content:flex-starts;
+                background-color: Snow;
+                align-items:center
+        }
+        .list3{
+                display: flex;
+
+                width: 70%;
+                flex-direction:row;
+                justify-content:flex-starts;
+                background-color: Snow;
+                align-items:center
+        }
+
+    </style>
+</head>
+<body>
+<div class="main-table">
+    <div class="header-table">
+        <form action="/add" method="POST">
+            <input type="text" class="text" name="title" placeholder="Enter task title" required>
+            <button type="submit">+</button>
+        </form>
+    </div>
+    <div class="party-table">
+        <h2>Задач :
+            {{taskskol}}
+        </h2>
+
+
+        {% for task in tasks %}
+
+        <div class="list">
+            <div class="list2">
+                {% if not task.completed %}
+                <form action="/complete/{{ task.id }}" method="POST" style="display:inline;">
+                    <button type="submit" class="button"></button>
+                </form>
+
+
+                {% else %}
+                <input type="checkbox" disabled checked>
+                {% endif %}
+                {{ task.title }}
+            </div>
+            <div class="list3">
+                {% if not task.completed %}
+                <form action="/edit/{{ task.id }}" method="POST" style="display:inline;">
+                    <input type="text" name="title" placeholder="Edit title">
+                    <button type="submit">Редактировать</button>
+                </form>
+                <form action="/delete/{{ task.id }}" method="POST" style="display:inline;">
+                    <button type="submit">🗑️</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+
+
+        <form action="/delete_all" method="POST">
+            <button type="submit">Удалить все</button>
+        </form>
+    </div>
+    <div class="party-table">
+        <h2>Фильт задач</h2>
+        <div class="list">
+            <div class="item"><a href="/filter/all">Все</a></div>
+            <div class="item"><a href="/filter/open">Открытые</a></div>
+            <div class="item"><a href="/filter/completed">Завершенные</a></div>
+        </div>
+        <div class="item"><a href="/logout">Logout</a></div>
+    </div>
+</body>
+</html>
